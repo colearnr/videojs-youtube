@@ -573,7 +573,7 @@
 
     // Let the player take care of itself as soon as the YouTube is ready
     // The loading spinner while waiting for the tech would be impossible otherwise
-    if (typeof this.player_.loadingSpinner !== 'undefined' && !this.isIos && !this.isAndroid) {
+    if (typeof this.player_.loadingSpinner !== 'undefined') {
       this.player_.loadingSpinner.hide();
     }
 
