@@ -58,9 +58,11 @@
       this.qualityButton.setAttribute('tabindex', 0);
 
       var qualityContent = document.createElement('div');
+      qualityContent.setAttribute('class', 'vjs-control-content');
       this.qualityButton.appendChild(qualityContent);
 
       this.qualityTitle = document.createElement('span');
+      this.qualityTitle.setAttribute('class', 'vjs-control-text');
       qualityContent.appendChild(this.qualityTitle);
 
       if(player.options()['quality'] !== 'undefined') {
@@ -69,7 +71,7 @@
 
       var qualityMenu = document.createElement('div');
       qualityMenu.setAttribute('class', 'vjs-menu');
-      this.qualityButton.appendChild(qualityMenu);
+      qualityContent.appendChild(qualityMenu);
 
       this.qualityMenuContent = document.createElement('ul');
       this.qualityMenuContent.setAttribute('class', 'vjs-menu-content');
@@ -93,7 +95,7 @@
       if(/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
         var ieVersion = Number(RegExp.$1);
         this.addIframeBlocker(ieVersion);
-      } else if(!/(iPad|iPhone|iPod|android)/g.test(navigator.userAgent)) {
+      } else if(!/(iPad|iPhone|iPod|Android)/g.test(navigator.userAgent)) {
         // the pointer-events: none block the mobile player
         this.el_.className += ' onDesktop';
         this.addIframeBlocker();
@@ -218,7 +220,7 @@
       if(this.player_.options()['ytcontrols']) {
         // Disable the video.js controls if we use the YouTube controls
         this.player_.controls(false);
-      } else if(typeof this.player_.poster() === 'undefined') {
+      } else if(typeof this.player_.poster() === 'undefined' || this.player_.poster().length === 0) {
         // Don't use player.poster(), it will fail here because the tech is still null in constructor
         setTimeout(function() {
           var posterEl = self.playerEl_.querySelectorAll('.vjs-poster')[0];
@@ -258,7 +260,9 @@
 
   videojs.Youtube.prototype.onWaiting = function(/*e*/) {
     // Make sure to hide the play button while the spinner is there
-    this.player_.bigPlayButton.hide();
+    if(typeof this.player_.bigPlayButton !== 'undefined') {
+      this.player_.bigPlayButton.hide();
+    }
   };
 
   videojs.Youtube.prototype.addIframeBlocker = function(ieVersion) {
@@ -271,7 +275,6 @@
     this.iframeblocker.style.right = 0;
     this.iframeblocker.style.top = 0;
     this.iframeblocker.style.bottom = 0;
-    this.iframeblocker.style.zIndex = 9999;
 
     // Odd quirk for IE8 (doesn't support rgba)
     if(ieVersion && ieVersion < 9) {
