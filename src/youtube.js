@@ -27,7 +27,7 @@
     init: function(player, options, ready) {
       // Save this for internal usage
       this.player_ = player;
-      
+
       // No event is triggering this for YouTube
       this['featuresProgressEvents'] = false;
       this['featuresTimeupdateEvents'] = false;
@@ -40,7 +40,7 @@
       this.isAndroid = /(Android)/g.test( navigator.userAgent );
       //used to prevent play events on IOS7 and Android > 4.2 until the user has clicked the player
       this.playVideoIsAllowed = !(this.isIos || this.isAndroid);
-      
+
       // autoplay is disabled for mobile
       if (this.isIos || this.isAndroid) {
         this.player_.options()['autoplay'] = false;
@@ -745,6 +745,9 @@
 
       case '1080p':
         return 'hd1080';
+
+      case '4k':
+        return 'highres';
     }
 
     return 'auto';
@@ -769,6 +772,9 @@
 
       case 'hd1080':
         return '1080p';
+
+      case 'highres':
+        return '4k';
     }
 
     return 'auto';
@@ -785,7 +791,6 @@
 
     this.quality = quality;
     setInnerText(this.qualityTitle, videojs.Youtube.parseQualityName(quality));
-
     switch(quality) {
       case 'medium':
         this.player_.videoWidth = 480;
